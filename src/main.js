@@ -1,8 +1,10 @@
-import Vue from 'vue'
 import App from './App.vue'
+import Vue from 'vue'
+import VueForm from "vue-form";
 import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
+Vue.use(VueForm);
 
 new Vue({
   vuetify,
