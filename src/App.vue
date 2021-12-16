@@ -83,7 +83,7 @@ export default {
     },
     getProducts() {
       axios
-        .get("https://61ba1ffb48df2f0017e5a919.mockapi.io/api/vi/products")
+        .get("https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products")
         .then((res) => {
           this.products = res.data;
         })

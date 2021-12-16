@@ -61,7 +61,7 @@ export default {
     addProduct() {
       axios
         .post(
-          "https://61ba1ffb48df2f0017e5a919.mockapi.io/api/vi/products",
+          "https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products",
           this.newProduct
         )
         .then(() => {
@@ -74,7 +74,7 @@ export default {
     deleteFromStock(id) {
       axios
         .delete(
-          `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/vi/products/${id}`
+          `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products/${id}`
         )
         .then(() => {
           this.$emit("getProducts");

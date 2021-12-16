@@ -67,15 +67,19 @@ export default {
 
   methods: {
     validate() {
-      console.log("entro");
       if (this.$refs.form.validate()) {
         axios
           .get(
-            `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/vi/users/?email=${this.model.email}&?password=${this.model.password}`
+            `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users?email=${this.model.email}&password=${this.model.password}`
           )
           .then((res) => {
-            console.log(res.data);
-            //this.$router.push("store");
+            if (
+              res.data.length === 1 &&
+              res.data[0].password === this.model.password
+            ) {
+              if (res.data[0].admin) this.$router.push("admin");
+              else this.$router.push("store");
+            } else console.log("Usuario o contraseña incorrecta.");
           })
           .catch((res) => {
             console.log(`Ha ocurrido un error al registrar el usuario: ${res}`);

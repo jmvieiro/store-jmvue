@@ -22,7 +22,8 @@
         </template>
         <template v-slot:item.action="{ item }">
           <v-btn fab dark x-small color="primary" @click="viewDetail(item)">
-            <v-icon dark>mdi-eye</v-icon>
+            <v-icon v-if="admin" dark>mdi-pencil</v-icon>
+            <v-icon v-else dark>mdi-eye</v-icon>
           </v-btn>
           <v-btn
             v-if="admin"

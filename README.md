@@ -1,24 +1,8 @@
 # store-jmvue
 
-## Project setup
+## Mockapi
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+Users: https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users
+Products: https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

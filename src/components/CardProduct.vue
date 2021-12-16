@@ -5,13 +5,34 @@
     @click:outside="$emit('closeDialog', false)"
   >
     <v-card class="mx-auto my-3">
-      <v-card-title>{{ product.title | capitalize }}</v-card-title>
-      <v-divider class="mx-4"></v-divider>
+      <div v-if="!admin">
+        <v-card-title>{{ product.title | capitalize }}</v-card-title>
+        <v-divider class="mx-4"></v-divider>
 
-      <v-card-text>
-        <h3>{{ product.description }}</h3>
-        <h4>Precio: {{ product.price | money }}</h4>
-      </v-card-text>
+        <v-card-text>
+          <h3>{{ product.description }}</h3>
+          <h4>Precio: {{ product.price | money }}</h4>
+        </v-card-text>
+      </div>
+      <div v-else>
+        <v-container>
+          <h3>Editar producto</h3>
+          <v-text-field
+            v-model="product.title"
+            label="Título"
+            value="this.$props.product.title"
+          ></v-text-field>
+          <v-text-field
+            v-model="product.description"
+            label="Descripción"
+          ></v-text-field>
+          <v-text-field
+            v-model.number="product.price"
+            label="Precio"
+          ></v-text-field>
+          <v-btn block @click="editProduct(product.id)">Confirmar</v-btn>
+        </v-container>
+      </div>
 
       <v-divider class="mx-4 my-4"></v-divider>
 
@@ -39,8 +60,16 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "CardProduct",
+  data() {
+    return {
+      title: "",
+      description: "",
+      price: 0,
+    };
+  },
   props: {
     product: {
       type: Object,
@@ -55,9 +84,31 @@ export default {
       default: false,
     },
   },
+  beforeUpdate() {
+    this.title = this.$props.product.title;
+    this.description = this.$props.product.description;
+    this.price = this.$props.product.price;
+  },
   methods: {
     addToCart() {
       this.$emit("addToCart", { product: this.$props.product, qty: 1 });
+    },
+    editProduct(id) {
+      axios
+        .put(
+          `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products/${id}`,
+          {
+            title: this.title,
+            description: this.description,
+            price: this.price,
+          }
+        )
+        .then(() => {
+          this.$emit("getProducts");
+        })
+        .catch((res) => {
+          console.log(`Ha ocurrido un error al crear el producto: ${res}`);
+        });
     },
   },
 };

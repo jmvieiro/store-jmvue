@@ -90,10 +90,11 @@ export default {
         console.log("¡Las contraseñas no coinciden!");
       else {
         axios
-          .post(
-            "https://61ba1ffb48df2f0017e5a919.mockapi.io/api/vi/users",
-            this.model
-          )
+          .post("https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users", {
+            email: this.model.email,
+            password: this.model.password,
+            admin: false,
+          })
           .then(() => {
             this.$router.push("store");
           })

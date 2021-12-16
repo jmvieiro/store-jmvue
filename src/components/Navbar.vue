@@ -11,12 +11,9 @@
       <router-link to="/register" class="ml-4" style="color: white !important"
         >Registro
       </router-link>
-      <router-link to="/login" class="ml-4" style="color: white !important"
+      <router-link to="/" class="ml-4" style="color: white !important"
         >Login
       </router-link>
-      <router-link to="/admin" class="ml-4" style="color: white !important"
-        >Admin</router-link
-      >
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -25,15 +22,6 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <router-link to="/store">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-cart</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Store </v-list-item-title>
-            </v-list-item>
-          </router-link>
-
           <router-link to="/register">
             <v-list-item>
               <v-list-item-icon>
@@ -43,7 +31,7 @@
             </v-list-item>
           </router-link>
 
-          <router-link to="/login">
+          <router-link to="/">
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
@@ -52,14 +40,6 @@
             </v-list-item>
           </router-link>
 
-          <router-link to="/admin">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-view-dashboard</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title> Admin </v-list-item-title>
-            </v-list-item>
-          </router-link>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
