@@ -25,6 +25,18 @@
             <v-icon dark>mdi-eye</v-icon>
           </v-btn>
           <v-btn
+            v-if="admin"
+            fab
+            dark
+            x-small
+            color="red"
+            class="ml-2"
+            @click="deleteFromStock(item)"
+          >
+            <v-icon dark>mdi-delete</v-icon>
+          </v-btn>
+          <v-btn
+            v-else
             fab
             dark
             x-small
@@ -40,6 +52,7 @@
     <CardProduct
       :open="dialog"
       :product="selectedProduct"
+      :admin="admin"
       @addToCart="addToCartFromDialog($event)"
       @closeDialog="closeDialog($event)"
     />
@@ -47,7 +60,7 @@
 </template>
 
 <script>
-import CardProduct from "./CardProduct";
+import CardProduct from "../components/CardProduct";
 
 export default {
   name: "Products",
@@ -59,11 +72,16 @@ export default {
       type: [],
       default: () => {},
     },
+    admin: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {
       headers: [
         { text: "ID", align: "start", value: "id" },
+        { text: "Título", value: "title" },
         { text: "Descripción", value: "description" },
         { text: "Precio", value: "price" },
         { text: "Acciones", value: "action" },
@@ -73,6 +91,9 @@ export default {
     };
   },
   methods: {
+    deleteFromStock(item) {
+      this.$emit("deleteFromStock", item.id);
+    },
     addToCart(item) {
       this.$emit("addToCart", { product: item, qty: 1 });
     },

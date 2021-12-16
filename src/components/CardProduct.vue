@@ -16,7 +16,12 @@
       <v-divider class="mx-4 my-4"></v-divider>
 
       <v-card-actions class="mx-2">
-        <v-btn dark color="success lighten-1 mb-2" @click="addToCart()">
+        <v-btn
+          v-if="!admin"
+          dark
+          color="success lighten-1 mb-2"
+          @click="addToCart()"
+        >
           Agregar
           <v-icon class="ml-2">mdi-cart-plus</v-icon>
         </v-btn>
@@ -42,6 +47,10 @@ export default {
       default: () => {},
     },
     open: {
+      type: Boolean,
+      default: false,
+    },
+    admin: {
       type: Boolean,
       default: false,
     },
