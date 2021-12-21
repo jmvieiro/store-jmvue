@@ -17,11 +17,11 @@
         style="margin: 0 auto; width: 98%; max-width: 98%"
         class="elevation-2 mt-6"
       >
-        <template v-slot:item.product.price="{ item }">
-          {{ item.product.price | money }}
+        <template v-slot:item.price="{ item }">
+          {{ item.price | money }}
         </template>
         <template v-slot:item.total="{ item }">
-          {{ (item.product.price * item.qty) | money }}
+          {{ (item.price * item.qty) | money }}
         </template>
         <template v-slot:item.action="{ item }">
           <v-btn
@@ -29,7 +29,7 @@
             dark
             x-small
             color="warning"
-            @click="removeFromCart(item.product.id)"
+            @click="removeFromCart(item.productId)"
           >
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>
@@ -52,9 +52,9 @@ export default {
   data: () => {
     return {
       headers: [
-        { text: "ID", align: "start", value: "product.id" },
-        { text: "Descripción", value: "product.description" },
-        { text: "Precio", value: "product.price" },
+        { text: "ID", align: "start", value: "productId" },
+        { text: "Título", value: "title" },
+        { text: "Precio", value: "price" },
         { text: "Cantidad", value: "qty" },
         { text: "Total", value: "total" },
         { text: "Acción", value: "action" },
@@ -70,7 +70,7 @@ export default {
     total() {
       let total = 0;
       this.cart.forEach((element) => {
-        total += element.qty * element.product.price;
+        total += element.qty * element.price;
       });
       return total;
     },

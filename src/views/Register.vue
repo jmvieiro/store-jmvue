@@ -8,13 +8,6 @@
           <v-container>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
-                v-model="model.user"
-                :counter="8"
-                :rules="userRules"
-                label="Usuario"
-                required
-              ></v-text-field>
-              <v-text-field
                 v-model="model.email"
                 :rules="emailRules"
                 label="E-mail"
@@ -60,17 +53,10 @@ export default {
   data: () => ({
     valid: true,
     model: {
-      user: "",
+      email: "",
       password: "",
       password2: "",
-      email: "",
     },
-    userRules: [
-      (v) => !!v || "Usuario es obligatorio.",
-      (v) =>
-        (v && v.length <= 8) ||
-        "El usuario no debe contener más de 8 caracteres.",
-    ],
     passwordRules: [
       (v) => !!v || "Contraseña es obligatoria.",
       (v) =>
