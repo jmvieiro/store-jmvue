@@ -2,6 +2,7 @@
   <v-app>
     <v-main>
       <Navbar />
+      <h1>Dev</h1>
       <v-container class="mt-4">
         <router-view
           :products="products"
@@ -12,7 +13,7 @@
         />
         <v-dialog v-model="dialog" max-width="500">
           <v-card class="success" dark>
-            <v-card-title class="text-h6">{{ textAlert }} dev </v-card-title>
+            <v-card-title class="text-h6">{{ textAlert }}</v-card-title>
           </v-card>
         </v-dialog>
       </v-container>
