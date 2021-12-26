@@ -2,7 +2,6 @@
   <v-app>
     <v-main>
       <Navbar />
-      <h1>Dev</h1>
       <v-container class="mt-4">
         <router-view
           :products="products"
