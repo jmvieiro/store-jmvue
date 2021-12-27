@@ -17,11 +17,11 @@
         style="margin: 0 auto; width: 98%; max-width: 98%"
         class="elevation-2 mt-6"
       >
-        <template v-slot:item.price="{ item }">
-          {{ item.price | money }}
+        <template v-slot:item.product.price="{ item }">
+          {{ item.product.price | money }}
         </template>
         <template v-slot:item.total="{ item }">
-          {{ (item.price * item.qty) | money }}
+          {{ (item.product.price * item.qty) | money }}
         </template>
         <template v-slot:item.action="{ item }">
           <v-btn
@@ -29,58 +29,43 @@
             dark
             x-small
             color="warning"
-            @click="removeFromCart(item.productId)"
+            @click="$store.dispatch('removeFromCart', item.product.id)"
           >
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>
         </template>
       </v-data-table>
+      <v-container class="text-right">
+        <v-btn color="red" dark @click="$store.dispatch('clearCart')"
+          >Vaciar carrito</v-btn
+        >
+      </v-container>
     </v-row>
     <h3 class="mt-8">Ítems: {{ totalItems }} | Total: {{ total | money }}</h3>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Cart",
-  props: {
-    cart: {
-      type: [],
-      default: () => {},
-    },
-  },
   data: () => {
     return {
       headers: [
-        { text: "ID", align: "start", value: "productId" },
-        { text: "Título", value: "title" },
-        { text: "Precio", value: "price" },
+        { text: "ID", align: "start", value: "product.id" },
+        { text: "Título", value: "product.title" },
+        { text: "Precio", value: "product.price" },
         { text: "Cantidad", value: "qty" },
         { text: "Total", value: "total" },
         { text: "Acción", value: "action" },
       ],
     };
   },
-  methods: {
-    removeFromCart(id) {
-      this.$emit("removeFromCart", id);
-    },
-  },
   computed: {
-    total() {
-      let total = 0;
-      this.cart.forEach((element) => {
-        total += element.qty * element.price;
-      });
-      return total;
-    },
-    totalItems() {
-      let total = 0;
-      this.cart.forEach((element) => {
-        total += element.qty;
-      });
-      return total;
-    },
+    ...mapGetters(["total", "totalItems", "cart"]),
+    // ...mapState({
+    //   cart: (state) => state.cart,
+    // }),
   },
 };
 </script>

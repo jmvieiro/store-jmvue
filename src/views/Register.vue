@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "Register",
   data: () => ({
@@ -71,22 +70,17 @@ export default {
 
   methods: {
     validate() {
-      this.$refs.form.validate();
-      if (this.model.password !== this.model.password2)
-        console.log("¡Las contraseñas no coinciden!");
-      else {
-        axios
-          .post("https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users", {
+      if (this.$refs.form.validate()) {
+        if (this.model.password !== this.model.password2)
+          console.log("¡Las contraseñas no coinciden!");
+        else {
+          this.$store.dispatch("register", {
             email: this.model.email,
             password: this.model.password,
             admin: false,
-          })
-          .then(() => {
-            this.$router.push("store");
-          })
-          .catch((res) => {
-            console.log(`Ha ocurrido un error al registrar el usuario: ${res}`);
           });
+          this.$router.push("store");
+        }
       }
     },
   },

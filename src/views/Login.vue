@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
   data: () => ({
@@ -68,24 +68,15 @@ export default {
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
-        axios
-          .get(
-            `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users?email=${this.model.email}&password=${this.model.password}`
-          )
-          .then((res) => {
-            if (
-              res.data.length === 1 &&
-              res.data[0].password === this.model.password
-            ) {
-              if (res.data[0].admin) this.$router.push("admin");
-              else this.$router.push("store");
-            } else console.log("Usuario o contraseña incorrecta.");
-          })
-          .catch((res) => {
-            console.log(`Ha ocurrido un error al registrar el usuario: ${res}`);
-          });
+        this.$store.dispatch("login", {
+          email: this.model.email,
+          password: this.model.password,
+        });
       }
     },
+  },
+  computed: {
+    ...mapGetters(["user"]),
   },
 };
 </script>

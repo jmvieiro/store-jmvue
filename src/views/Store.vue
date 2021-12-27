@@ -4,15 +4,17 @@
     <v-divider class="mt-0 mb-12"></v-divider>
     <v-row>
       <v-col cols="12" xs="12" lg="8">
-        <Products
-          :products="products"
-          :admin="false"
-          @addToCart="$emit('addToCart', $event)"
-          @deleteFromStock="deleteFromStock($event)"
-        />
+        <div v-if="loading" class="text-center">
+          <v-progress-circular
+            size="60"
+            indeterminate
+            color="blue"
+          ></v-progress-circular>
+        </div>
+        <Products v-else :admin="false" />
       </v-col>
       <v-col xs="12" lg="4">
-        <Cart :cart="cart" @removeFromCart="$emit('removeFromCart', $event)" />
+        <Cart />
       </v-col>
     </v-row>
   </div>
@@ -21,6 +23,7 @@
 <script>
 import Products from "../components/Products";
 import Cart from "../components/Cart";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Store",
@@ -28,15 +31,8 @@ export default {
     Products,
     Cart,
   },
-  props: {
-    products: {
-      type: [],
-      default: () => [],
-    },
-    cart: {
-      type: [],
-      default: () => [],
-    },
+  computed: {
+    ...mapGetters(["loading"]),
   },
 };
 </script>

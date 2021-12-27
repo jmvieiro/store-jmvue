@@ -32,7 +32,7 @@
             x-small
             color="red"
             class="ml-2"
-            @click="deleteFromStock(item)"
+            @click="$store.dispatch('deleteFromStock', item.id)"
           >
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>
@@ -43,7 +43,7 @@
             x-small
             color="success"
             class="ml-2"
-            @click="addToCart(item)"
+            @click="$store.dispatch('addToCart', { product: item, qty: 1 })"
           >
             <v-icon dark>mdi-cart-plus</v-icon>
           </v-btn>
@@ -54,7 +54,6 @@
       :open="dialog"
       :product="selectedProduct"
       :admin="admin"
-      @addToCart="addToCartFromDialog($event)"
       @closeDialog="closeDialog($event)"
     />
   </div>
@@ -62,6 +61,7 @@
 
 <script>
 import CardProduct from "../components/CardProduct";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Products",
@@ -69,10 +69,6 @@ export default {
     CardProduct,
   },
   props: {
-    products: {
-      type: [],
-      default: () => {},
-    },
     admin: {
       type: Boolean,
       default: false,
@@ -92,15 +88,6 @@ export default {
     };
   },
   methods: {
-    deleteFromStock(item) {
-      this.$emit("deleteFromStock", item.id);
-    },
-    addToCart(item) {
-      this.$emit("addToCart", { product: item, qty: 1 });
-    },
-    addToCartFromDialog(item) {
-      this.$emit("addToCart", { product: item.product, qty: item.qty });
-    },
     closeDialog(state) {
       this.dialog = state;
     },
@@ -108,6 +95,9 @@ export default {
       this.selectedProduct = product;
       this.dialog = true;
     },
+  },
+  computed: {
+    ...mapGetters(["products"]),
   },
 };
 </script>

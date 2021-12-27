@@ -8,7 +8,6 @@
       <div v-if="!admin">
         <v-card-title>{{ product.title | capitalize }}</v-card-title>
         <v-divider class="mx-4"></v-divider>
-
         <v-card-text>
           <h3>{{ product.description }}</h3>
           <h4>Precio: {{ product.price | money }}</h4>
@@ -41,7 +40,7 @@
           v-if="!admin"
           dark
           color="success lighten-1 mb-2"
-          @click="addToCart()"
+          @click="$store.dispatch('addToCart', { product: product, qty: 1 })"
         >
           Agregar
           <v-icon class="ml-2">mdi-cart-plus</v-icon>
@@ -60,7 +59,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   name: "CardProduct",
   data() {
@@ -90,25 +88,14 @@ export default {
     this.price = this.$props.product.price;
   },
   methods: {
-    addToCart() {
-      this.$emit("addToCart", { product: this.$props.product, qty: 1 });
-    },
     editProduct(id) {
-      axios
-        .put(
-          `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products/${id}`,
-          {
-            title: this.title,
-            description: this.description,
-            price: this.price,
-          }
-        )
-        .then(() => {
-          this.$emit("getProducts");
-        })
-        .catch((res) => {
-          console.log(`Ha ocurrido un error al crear el producto: ${res}`);
-        });
+      this.$store.dispatch("editProduct", {
+        id: id,
+        title: this.title,
+        description: this.description,
+        price: this.price,
+      });
+      this.$emit("closeDialog", false);
     },
   },
 };
