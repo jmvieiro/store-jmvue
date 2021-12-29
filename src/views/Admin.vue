@@ -1,12 +1,10 @@
 <template>
   <div>
     <h2 class="mb-0 mb-lg-8">Panel de administración</h2>
-    <v-divider class="mt-0 mb-12"></v-divider>
     <v-row>
       <v-col xs="12" lg="4">
         <v-card class="sidebar pa-4">
           <h3>Agregar producto</h3>
-
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
               v-model="newProduct.title"
