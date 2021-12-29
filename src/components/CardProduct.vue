@@ -1,71 +1,56 @@
 <template>
-  <v-dialog
-    v-model="open"
-    max-width="500"
-    @click:outside="$emit('closeDialog', false)"
-  >
-    <v-card class="mx-auto my-3">
-      <div v-if="!admin">
-        <v-card-title>{{ product.title | capitalize }}</v-card-title>
-        <v-divider class="mx-4"></v-divider>
-        <v-card-text>
-          <h3>{{ product.description }}</h3>
-          <h4>Precio: {{ product.price | money }}</h4>
-        </v-card-text>
-      </div>
-      <div v-else>
-        <v-container>
-          <h3>Editar producto</h3>
-          <v-text-field
-            v-model="product.title"
-            label="Título"
-            value="this.$props.product.title"
-          ></v-text-field>
-          <v-text-field
-            v-model="product.description"
-            label="Descripción"
-          ></v-text-field>
-          <v-text-field
-            v-model.number="product.price"
-            label="Precio"
-          ></v-text-field>
-          <v-btn block @click="editProduct(product.id)">Confirmar</v-btn>
-        </v-container>
-      </div>
-
-      <v-divider class="mx-4 my-4"></v-divider>
-
-      <v-card-actions class="mx-2">
-        <v-btn
-          v-if="!admin"
-          dark
-          color="success lighten-1 mb-2"
-          @click="$store.dispatch('addToCart', { product: product, qty: 1 })"
-        >
-          Agregar
-          <v-icon class="ml-2">mdi-cart-plus</v-icon>
-        </v-btn>
-        <v-btn
-          dark
-          color="red lighten-1 mb-2"
-          @click="$emit('closeDialog', false)"
-        >
-          Cerrar
-          <v-icon class="ml-2">mdi-close</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <v-card style="border: 1px solid #00e0a5; background-color: inherit">
+    <v-card-title style="color: white"> {{ product.title }} </v-card-title>
+    <v-card-subtitle style="color: white">
+      {{ product.description }}
+    </v-card-subtitle>
+    <v-card-text style="color: white"
+      >Precio: {{ product.price | money }}
+    </v-card-text>
+    <v-card-actions>
+      <v-btn dark color="primary" @click="viewDetail(product)">
+        <div v-if="admin"><v-icon dark>mdi-pencil</v-icon> Editar</div>
+        <div v-else><v-icon dark>mdi-eye</v-icon> Detalle</div>
+      </v-btn>
+      <v-btn
+        v-if="admin"
+        dark
+        color="red"
+        class="ml-2"
+        @click="$store.dispatch('deleteFromStock', product.id)"
+      >
+        <v-icon dark>mdi-delete</v-icon> Eliminar
+      </v-btn>
+      <v-btn
+        v-else
+        dark
+        color="success"
+        class="ml-2"
+        @click="$store.dispatch('addToCart', { product: product, qty: 1 })"
+      >
+        <v-icon dark>mdi-cart-plus</v-icon> Agregar
+      </v-btn>
+    </v-card-actions>
+    <EditProduct
+      :open="dialog"
+      :product="product"
+      :admin="admin"
+      @closeDialog="closeDialog($event)"
+    />
+  </v-card>
 </template>
 
 <script>
+import EditProduct from "../components/EditProduct";
+
 export default {
   name: "CardProduct",
+  components: {
+    EditProduct,
+  },
   data() {
     return {
-      title: "",
-      description: "",
-      price: 0,
+      dialog: false,
     };
   },
   props: {
@@ -73,29 +58,18 @@ export default {
       type: Object,
       default: () => {},
     },
-    open: {
-      type: Boolean,
-      default: false,
-    },
     admin: {
       type: Boolean,
       default: false,
     },
   },
-  beforeUpdate() {
-    this.title = this.$props.product.title;
-    this.description = this.$props.product.description;
-    this.price = this.$props.product.price;
-  },
   methods: {
-    editProduct(id) {
-      this.$store.dispatch("editProduct", {
-        id: id,
-        title: this.title,
-        description: this.description,
-        price: this.price,
-      });
-      this.$emit("closeDialog", false);
+    closeDialog(state) {
+      this.dialog = state;
+    },
+    viewDetail(product) {
+      if (this.$props.admin) console.log("esAdmin");
+      else this.$router.push(`store/${product.id}`);
     },
   },
 };

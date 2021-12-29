@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="blue-grey darken-4">
       <Navbar />
       <v-container class="mt-4">
         <router-view />
@@ -38,5 +38,8 @@ a {
   font-weight: bold;
   color: #a9b9c9;
   text-decoration: none;
+}
+* {
+  color: white !important;
 }
 </style>

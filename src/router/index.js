@@ -6,8 +6,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Login",
-    component: () => import("../views/Login.vue"),
+    name: "Store",
+    component: () => import("../views/Store.vue"),
   },
   {
     path: "/store",
@@ -15,14 +15,24 @@ const routes = [
     component: () => import("../views/Store.vue"),
   },
   {
-    path: "/register",
-    name: "Register",
-    component: () => import("../views/Register.vue"),
+    path: "/store/:id",
+    name: "Store",
+    component: () => import("../views/Store.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/admin",
     name: "Admin",
     component: () => import("../views/Admin.vue"),
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: () => import("../views/Cart.vue"),
   },
 ];
 
