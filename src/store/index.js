@@ -10,6 +10,7 @@ export default new Vuex.Store({
     cart: [],
     loading: false,
     user: {},
+    errorLogin: "",
   },
   mutations: {
     ADD_PRODUCT(state, payload) {
@@ -43,7 +44,7 @@ export default new Vuex.Store({
     },
     REMOVE_FROM_CART(state, payload) {
       let aux = state.cart.filter(function (obj) {
-        return obj.product.id !== payload;
+        return obj.product.id !== payload.product.id;
       });
       state.cart = aux;
     },
@@ -61,6 +62,9 @@ export default new Vuex.Store({
     },
     LOGIN(state, payload) {
       state.user = payload;
+    },
+    ERROR_LOGIN(state, payload) {
+      state.errorLogin = payload;
     },
   },
   actions: {
@@ -151,7 +155,9 @@ export default new Vuex.Store({
             res.data[0].password === payload.password
           ) {
             context.commit("LOGIN", res.data);
-          } else console.log("Usuario o contraseña incorrecta.");
+          } else
+            context.commit("ERROR_LOGIN", "Usuario o contraseña incorrecta.");
+          // console.log("Usuario o contraseña incorrecta.");
         })
         .catch((res) => {
           console.log(`Ha ocurrido un error al loguar al usuario: ${res}`);
@@ -166,5 +172,6 @@ export default new Vuex.Store({
     products: (state) => state.products,
     loading: (state) => state.loading,
     user: (state) => state.user,
+    errorLogin: (state) => state.errorLogin,
   },
 });

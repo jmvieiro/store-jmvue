@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-0 mb-lg-8">Registro</h2>
+    <h2 class="mb-8 mb-lg-8">Registro</h2>
     <v-row>
       <v-col cols="6">
         <v-card>

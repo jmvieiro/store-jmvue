@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-0 mb-lg-8">Panel de administración</h2>
+    <h2 class="mb-8 mb-lg-8">Panel de administración</h2>
     <v-row>
       <v-col xs="12" lg="4">
         <v-card class="sidebar pa-4">

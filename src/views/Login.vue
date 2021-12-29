@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <h2 class="mb-0 mb-lg-8">Login</h2>
+  <v-container>
+    <h2 class="mb-8 mb-lg-8">
+      Acceso usuarios
+      <i style="font-size: 17px !important"> => Test: jmvieiro@gmail.com | 1234 </i>
+    </h2>
     <v-row>
       <v-col cols="6">
-        <v-card>
+        <v-card class="grey darken-3">
           <v-container>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field
@@ -26,14 +29,22 @@
                 class="mt-4"
                 @click="validate"
               >
-                Validar
+                Ingresar
               </v-btn>
+              <v-alert
+                v-if="visible"
+                dense
+                prominent
+                color="red lighten-2 mt-8"
+              >
+                {{ error }}</v-alert
+              >
             </v-form>
           </v-container>
         </v-card>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -42,6 +53,8 @@ export default {
   name: "Login",
   data: () => ({
     valid: true,
+    error: "",
+    visible: false,
     model: {
       password: "",
       email: "",
@@ -67,6 +80,7 @@ export default {
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
+        this.visible = false;
         this.$store.dispatch("login", {
           email: this.model.email,
           password: this.model.password,
@@ -75,7 +89,18 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "errorLogin"]),
+  },
+  watch: {
+    user() {
+      if (this.user) this.$router.push("store");
+    },
+    errorLogin() {
+      if (this.errorLogin) {
+        this.error = this.errorLogin;
+        this.visible = true;
+      }
+    },
   },
 };
 </script>

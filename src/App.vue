@@ -42,4 +42,8 @@ a {
 * {
   color: white !important;
 }
+
+.border-main {
+  border: 1px solid #00e0a5 !important;
+}
 </style>

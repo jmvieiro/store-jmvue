@@ -8,8 +8,8 @@
       ></v-progress-circular>
     </div>
     <div v-else>
-      <h2 v-if="!$route.params.id" class="mb-0 mb-lg-8">Productos</h2>
-      <h2 v-else class="mb-0 mb-lg-8">Detalle producto</h2>
+      <h2 v-if="!$route.params.id" class="mb-8 mb-lg-8">Productos</h2>
+      <h2 v-else class="mb-8 mb-lg-8">Detalle producto</h2>
       <v-row>
         <v-col cols="12">
           <Products v-if="!$route.params.id" :admin="false" />
@@ -37,11 +37,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["loading"]),
+    ...mapGetters(["loading", "products"]),
   },
   updated() {
     if (this.$route.params.id)
-      this.product = this.$store.getters.products.find(
+      this.product = this.products.find(
         (p) => p.id === this.$route.params.id
       );
   },
