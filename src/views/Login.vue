@@ -1,63 +1,104 @@
 <template>
   <v-container>
-    <h2 class="mb-8 mb-lg-8">
-      Acceso usuarios
-      <i style="font-size: 17px !important"> => Test: jmvieiro@gmail.com | 1234 </i>
-    </h2>
-    <v-row>
-      <v-col cols="6">
-        <v-card class="grey darken-3">
-          <v-container>
-            <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field
-                v-model="model.email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="model.password"
-                type="password"
-                :counter="15"
-                :rules="passwordRules"
-                label="Contraseña"
-                required
-              ></v-text-field>
-              <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mt-4"
-                @click="validate"
-              >
-                Ingresar
-              </v-btn>
-              <v-alert
-                v-if="visible"
-                dense
-                prominent
-                color="red lighten-2 mt-8"
-              >
-                {{ error }}</v-alert
-              >
-            </v-form>
-          </v-container>
-        </v-card>
-      </v-col>
-    </v-row>
+    <BackToStore />
+    <v-card
+      v-if="!user[0]"
+      max-width="600"
+      class="mx-auto mt-4 pa-8 grey darken-4"
+    >
+      <v-container>
+        <h2 class="mb-8 mb-lg-8 text-yellow text-uppercase">
+          Acceso usuarios
+          <i style="font-size: 17px !important" class="text-lowercase">
+            (Test: jmvieiro@gmail.com | 1234)
+          </i>
+        </h2>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            v-model="model.email"
+            :rules="emailRules"
+            label="E-mail"
+            required
+            class="text-yellow"
+          ></v-text-field>
+          <v-text-field
+            v-model="model.password"
+            type="password"
+            :counter="15"
+            :rules="passwordRules"
+            label="Contraseña"
+            required
+          ></v-text-field>
+          <v-btn
+            :disabled="!valid"
+            class="mt-8 border-yellow text-yellow"
+            dark
+            block
+            @click="validate"
+          >
+            Ingresar
+          </v-btn>
+          <div class="text-center mt-8">
+            <h4 class="text-yellow">¿No estás registrado?</h4>
+            <router-link to="/register">
+              <h4 class="text-uppercase mt-2">Registrate</h4>
+            </router-link>
+          </div>
+          <v-alert v-if="visible" dense prominent color="red lighten-2 mt-8">
+            {{ error }}</v-alert
+          >
+        </v-form>
+      </v-container>
+    </v-card>
+    <v-card
+      v-else
+      color="black"
+      max-width="600"
+      class="mx-auto mt-4 pa-8 text-center grey darken-4"
+    >
+      <h2 class="text-yellow mb-6">
+        Bienvenido {{ user[0].email }}
+      </h2>
+
+      <div v-if="user[0].admin">
+        <router-link to="/">
+          <h2 class="border-main pa-2 mt-4">Ir al store</h2>
+        </router-link>
+        <router-link to="/admin/products">
+          <h2 class="border-main pa-2 mt-4">Administrar los productos</h2>
+        </router-link>
+        <router-link to="/admin/orders">
+          <h2 class="border-main pa-2 mt-4">Gestionar las órdenes</h2>
+        </router-link>
+      </div>
+      <div v-else>
+        <h3 class="text-yellow mb-4">Te estamos redirigiendo al store</h3>
+        <h1 class="text-yellow">{{ timerCount }}</h1>
+      </div>
+    </v-card>
+    <BottomNavigationCart />
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import BackToStore from "../components/BackToStore";
+import BottomNavigationCart from "../components/BottomNavigationCart";
+
 export default {
   name: "Login",
+  components: {
+    BackToStore,
+    BottomNavigationCart,
+  },
   data: () => ({
     valid: true,
     error: "",
     visible: false,
+    timerCount: 6,
     model: {
-      password: "",
-      email: "",
+      password: "1234",
+      email: "jmvieiro@gmail.com",
     },
     userRules: [
       (v) => !!v || "Usuario es obligatorio.",
@@ -76,30 +117,38 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "Ingresa un e-mail válido.",
     ],
   }),
-
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
         this.visible = false;
-        this.$store.dispatch("login", {
+        this.$store.dispatch("auth/login", {
           email: this.model.email,
           password: this.model.password,
         });
+        this.timerCount--;
       }
     },
   },
   computed: {
-    ...mapGetters(["user", "errorLogin"]),
+    ...mapGetters("auth", ["user"]),
+    ...mapGetters("auth", ["errorLogin"]),
   },
   watch: {
-    user() {
-      if (this.user) this.$router.push("store");
-    },
     errorLogin() {
       if (this.errorLogin) {
         this.error = this.errorLogin;
         this.visible = true;
       }
+    },
+    timerCount: {
+      handler(value) {
+        if (value > 0) {
+          setTimeout(() => {
+            this.timerCount--;
+          }, 1000);
+        }
+      },
+      immediate: false,
     },
   },
 };

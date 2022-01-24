@@ -1,57 +1,57 @@
 <template>
   <v-dialog
-    v-model="open"
-    max-width="500"
+    v-model="dialog"
+    persistent
+    max-width="800px"
+    dark
     @click:outside="$emit('closeDialog', false)"
   >
-    <v-card class="mx-auto my-3">
-      <div v-if="!admin">
-        <v-card-title>{{ product.title | capitalize }}</v-card-title>
-        <v-divider class="mx-4"></v-divider>
-        <v-card-text>
-          <h3>{{ product.description }}</h3>
-          <h4>Precio: {{ product.price | money }}</h4>
-        </v-card-text>
-      </div>
-      <div v-else>
-        <v-container>
-          <h3>Editar producto</h3>
+    <v-card>
+      <v-card-title>
+        <span class="text-h5">Editar producto</span>
+      </v-card-title>
+      <v-card-text>
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
-            v-model="product.title"
+            v-model="selectedProduct.title"
+            :rules="textRules"
             label="Título"
-            value="this.$props.product.title"
+            :counter="40"
+            required
           ></v-text-field>
           <v-text-field
-            v-model="product.description"
+            v-model="selectedProduct.description"
+            :rules="textRules"
             label="Descripción"
+            :counter="40"
+            required
           ></v-text-field>
           <v-text-field
-            v-model.number="product.price"
+            v-model.number="selectedProduct.price"
+            :rules="numberRules"
             label="Precio"
+            required
           ></v-text-field>
-          <v-btn block @click="editProduct(product.id)">Confirmar</v-btn>
-        </v-container>
-      </div>
-
-      <v-divider class="mx-4 my-4"></v-divider>
-
-      <v-card-actions class="mx-2">
-        <v-btn
-          v-if="!admin"
-          dark
-          color="success lighten-1 mb-2"
-          @click="$store.dispatch('addToCart', { product: product, qty: 1 })"
-        >
-          Agregar
-          <v-icon class="ml-2">mdi-cart-plus</v-icon>
+          <v-text-field
+            v-model="selectedProduct.img"
+            label="Imagen"
+            required
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="$emit('closeDialog', false)">
+          Cancelar
         </v-btn>
         <v-btn
+          :disabled="!valid"
+          text
+          color="blue darken-1"
           dark
-          color="red lighten-1 mb-2"
-          @click="$emit('closeDialog', false)"
+          @click="validate(product.id)"
         >
-          Cerrar
-          <v-icon class="ml-2">mdi-close</v-icon>
+          Confirmar
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -63,9 +63,23 @@ export default {
   name: "EditProduct",
   data() {
     return {
-      title: "",
-      description: "",
-      price: 0,
+      selectedProduct: {
+        title: "",
+        price: 0,
+        description: "",
+        img: "",
+      },
+      valid: true,
+      textRules: [
+        (v) => !!v || "Campo obligatorio.",
+        (v) =>
+          (v && v.length <= 40) ||
+          "El campo no debe contener más de 40 caracteres.",
+      ],
+      numberRules: [
+        (v) => !!v || "El precio es obligatorio.",
+        (v) => parseFloat(v) >= 0 || "El precio debe ser mayor a 0.",
+      ],
     };
   },
   props: {
@@ -73,29 +87,28 @@ export default {
       type: Object,
       default: () => {},
     },
-    open: {
+    dialog: {
       type: Boolean,
       default: false,
     },
-    admin: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  beforeUpdate() {
-    this.title = this.$props.product.title;
-    this.description = this.$props.product.description;
-    this.price = this.$props.product.price;
   },
   methods: {
-    editProduct(id) {
-      this.$store.dispatch("editProduct", {
-        id: id,
-        title: this.title,
-        description: this.description,
-        price: this.price,
-      });
-      this.$emit("closeDialog", false);
+    validate(id) {
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch("products/editProduct", {
+          id: id,
+          title: this.selectedProduct.title,
+          description: this.selectedProduct.description,
+          price: this.selectedProduct.price,
+          img: this.selectedProduct.img,
+        });
+        this.$emit("closeDialog", false);
+      }
+    },
+  },
+  watch: {
+    product() {
+      this.selectedProduct = { ...this.$props.product };
     },
   },
 };

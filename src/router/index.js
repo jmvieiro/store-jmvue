@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
     component: () => import("../views/Store.vue"),
   },
   {
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/Register.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
@@ -27,7 +33,26 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
+    meta: { requiresAuth: true },
     component: () => import("../views/Admin.vue"),
+  },
+  {
+    path: "/admin/products",
+    name: "Admin",
+    meta: { requiresAuth: true },
+    component: () => import("../views/Admin.vue"),
+  },
+  {
+    path: "/admin/products/:id",
+    name: "Admin",
+    meta: { requiresAuth: true },
+    component: () => import("../views/Admin.vue"),
+  },
+  {
+    path: "/admin/orders",
+    name: "Admin",
+    meta: { requiresAuth: true },
+    component: () => import("../views/AdminOrders.vue"),
   },
   {
     path: "/cart",
@@ -40,6 +65,17 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  let user = store.getters["auth/user"][0];
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (user && user.admin) {
+      next();
+      return;
+    }
+    next("/login");
+  } else next();
 });
 
 export default router;

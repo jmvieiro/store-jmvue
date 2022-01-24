@@ -1,17 +1,15 @@
 <template>
   <v-app>
-    <v-main class="blue-grey darken-4">
-      <Navbar />
-      <v-container class="mt-4">
-        <router-view />
-      </v-container>
+    <Appbar />
+    <v-main class="black">
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
-import Navbar from "./components/Navbar";
+import Appbar from "./components/Appbar";
 
 Vue.filter("capitalize", (value) => {
   if (!value) return "";
@@ -25,25 +23,44 @@ Vue.filter("money", (value) => {
 export default {
   name: "App",
   components: {
-    Navbar,
+    Appbar,
   },
   mounted() {
-    this.$store.dispatch("getProducts");
+    this.$store.dispatch("products/getProducts");
   },
 };
 </script>
 
 <style lang="scss">
 a {
-  font-weight: bold;
-  color: #a9b9c9;
-  text-decoration: none;
-}
-* {
-  color: white !important;
+  font-weight: bold !important;
+  color: #d4e069 !important;
+  text-decoration: none !important;
 }
 
 .border-main {
-  border: 1px solid #00e0a5 !important;
+  border: 1px solid #d4e069 !important;
+  border-radius: 3px !important;
+}
+.v-card__subtitle,
+.v-card__title {
+  color: #d4e069 !important;
+  text-transform: uppercase;
+}
+.border-yellow {
+  border: 1px solid #d4e069 !important;
+}
+.text-yellow,
+.v-label,
+input {
+  color: #d4e069 !important;
+}
+input {
+  border-bottom: 1px solid #d4e069 !important;
+  margin-bottom: 10px;
+}
+.v-data-table__wrapper > table > thead > tr > th {
+  color: #d4e069 !important;
+  font-size: 16px !important;
 }
 </style>

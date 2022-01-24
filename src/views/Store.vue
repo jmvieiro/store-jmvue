@@ -1,49 +1,38 @@
 <template>
-  <v-container>
+  <div>
     <div v-if="loading" class="text-center">
       <v-progress-circular
         size="60"
         indeterminate
-        color="blue"
+        color="green"
       ></v-progress-circular>
     </div>
     <div v-else>
-      <h2 v-if="!$route.params.id" class="mb-8 mb-lg-8">Productos</h2>
-      <h2 v-else class="mb-8 mb-lg-8">Detalle producto</h2>
-      <v-row>
-        <v-col cols="12">
-          <Products v-if="!$route.params.id" :admin="false" />
-          <ProductDetail v-else :product="product" />
-        </v-col>
-      </v-row>
+      <Products :productId="this.$route.params.id" :admin="false" />
+      <BottomNavigationCart />
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import Products from "../components/Products";
-import ProductDetail from "../components/ProductDetail";
+import BottomNavigationCart from "../components/BottomNavigationCart";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Store",
   components: {
     Products,
-    ProductDetail,
+    BottomNavigationCart,
   },
   data() {
     return {
       product: {},
+      totalIte: this.totalItems,
     };
   },
   computed: {
-    ...mapGetters(["loading", "products"]),
-  },
-  updated() {
-    if (this.$route.params.id)
-      this.product = this.products.find(
-        (p) => p.id === this.$route.params.id
-      );
+    ...mapGetters("products", ["loading"]),
   },
 };
 </script>

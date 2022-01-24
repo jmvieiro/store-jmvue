@@ -1,83 +1,42 @@
 <template>
-  <v-card class="border-main" style="background-color: inherit">
-    <v-container>
-      <v-row>
-        <v-col cols="12" lg="3"><i>place for img</i> </v-col>
-        <v-col cols="12" lg="9">
-          <v-card-title style="color: white">
-            {{ product.title }}
-          </v-card-title>
-          <v-card-text style="color: white"
-            >Precio: {{ product.price | money }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn dark color="primary" @click="viewDetail(product)">
-              <div v-if="admin"><v-icon dark>mdi-pencil</v-icon> Editar</div>
-              <div v-else><v-icon dark>mdi-eye</v-icon> Detalle</div>
-            </v-btn>
-            <v-btn
-              v-if="admin"
-              dark
-              color="red"
-              class="ml-2"
-              @click="$store.dispatch('deleteFromStock', product.id)"
-            >
-              <v-icon dark>mdi-delete</v-icon> Eliminar
-            </v-btn>
-            <v-btn
-              v-else
-              dark
-              color="success"
-              class="ml-2"
-              @click="
-                $store.dispatch('addToCart', { product: product, qty: 1 })
-              "
-            >
-              <v-icon dark>mdi-cart-plus</v-icon> Agregar
-            </v-btn>
-          </v-card-actions>
-        </v-col>
-      </v-row>
-    </v-container>
-    <EditProduct
-      :open="dialog"
-      :product="product"
-      :admin="admin"
-      @closeDialog="closeDialog($event)"
-    />
+  <v-card class="mx-auto black align-center justify-center" max-width="500">
+    <router-link :to="{ path: '/store/' + product.id }">
+      <img :src="product.img" style="width: 100%" />
+    </router-link>
+    <v-card-title class="justify-center"> {{ product.title }} </v-card-title>
+    <v-card-title class="justify-center">
+      {{ product.price | money }}
+    </v-card-title>
+    <v-card-actions class="justify-center">
+      <v-btn
+        dark
+        outlined
+        class="ml-2 text-yellow"
+        @click="
+          $store.dispatch('cart/addToCart', {
+            product: product,
+            qty: 1,
+          })
+        "
+      >
+        <v-icon dark>mdi-cart-plus</v-icon> Agregar
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import EditProduct from "../components/EditProduct";
-
 export default {
   name: "ProductCard",
-  components: {
-    EditProduct,
-  },
-  data() {
-    return {
-      dialog: false,
-    };
-  },
   props: {
     product: {
       type: Object,
       default: () => {},
     },
-    admin: {
-      type: Boolean,
-      default: false,
-    },
   },
   methods: {
-    closeDialog(state) {
-      this.dialog = state;
-    },
-    viewDetail(product) {
-      if (this.$props.admin) console.log("esAdmin");
-      else this.$router.push(`store/${product.id}`);
+    viewDetail(id) {
+      this.$router.push({ path: `/store/${id}` }).catch(() => {});
     },
   },
 };
