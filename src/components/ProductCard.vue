@@ -1,9 +1,9 @@
 <template>
-  <v-card class="mx-auto black align-center justify-center" max-width="500">
+  <v-card class="mx-auto black align-center justify-center" max-width="350">
     <router-link :to="{ path: '/store/' + product.id }">
       <img :src="product.img" style="width: 100%" />
     </router-link>
-    <v-card-title class="justify-center"> {{ product.title }} </v-card-title>
+    <v-card-title class="justify-center pb-0 pt-0"> {{ product.title }} </v-card-title>
     <v-card-title class="justify-center">
       {{ product.price | money }}
     </v-card-title>

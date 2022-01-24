@@ -2,15 +2,14 @@
   <div v-if="productId">
     <ProductDetail :product="products.find((p) => p.id === productId)" />
   </div>
-  <div v-else>
+  <div v-else style="padding-bottom: 150px">
     <v-container>
       <v-row>
         <v-col
           cols="12"
-          lg="4"
-          md="6"
+          lg="3"
+          md="4"
           xs="12"
-          class="pa-4 pb-4"
           v-for="(product, i) in products"
           :key="i"
         >

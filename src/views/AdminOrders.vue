@@ -33,16 +33,17 @@
           </template>
           <template v-slot:item.actions="{ item }">
             <span>
-              <v-btn
-                icon
-                class="ml-1 text-yellow"
-                @click="viewOrder(item.id)"
-              >
+              <v-btn icon class="ml-1 text-yellow" @click="viewOrder(item)">
                 <v-icon icon dark>mdi-eye</v-icon>
               </v-btn>
             </span>
           </template>
         </v-data-table>
+        <EditOrder
+          :order="selectedOrder"
+          :dialog="dialog"
+          @closeDialog="closeDialog($event)"
+        />
       </div>
     </div>
   </v-container>
@@ -50,6 +51,7 @@
 
 <script>
 import AdminHeader from "../components/AdminHeader";
+import EditOrder from "../components/EditOrder";
 
 import { mapGetters } from "vuex";
 
@@ -57,14 +59,12 @@ export default {
   name: "AdminOrders",
   components: {
     AdminHeader,
+    EditOrder,
   },
-  methods: {
-    viewOrder(id) {
-      console.log(id);
-    },
-  },
-  data: () => {
+  data() {
     return {
+      dialog: false,
+      selectedOrder: {},
       headers: [
         { text: "ID", align: "start", value: "id" },
         { text: "Comprador", value: "buyer.name" },
@@ -74,6 +74,15 @@ export default {
         { text: "Acciones", value: "actions" },
       ],
     };
+  },
+  methods: {
+    viewOrder(order) {
+      this.dialog = true;
+      this.selectedOrder = { ...order };
+    },
+    closeDialog(state) {
+      this.dialog = state;
+    },
   },
   computed: {
     ...mapGetters("orders", ["orders"]),

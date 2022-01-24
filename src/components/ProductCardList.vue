@@ -46,10 +46,10 @@ export default {
     return {
       dialog: false,
       selectedProduct: {
-        title: "",
-        price: 0,
-        description: "",
-        img: "",
+        // title: "",
+        // price: 0,
+        // description: "",
+        // img: "",
       },
     };
   },
