@@ -10,7 +10,7 @@
         ></v-progress-circular>
       </div>
       <div v-else>
-        <div v-if="product">
+        <div v-if="product && product.visible">
           <v-card color="black" max-width="1300" class="mx-auto mt-4">
             <v-container>
               <v-row>

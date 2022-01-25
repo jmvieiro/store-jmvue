@@ -6,7 +6,7 @@
         lg="3"
         md="4"
         xs="12"
-        v-for="(product, i) in products"
+        v-for="(product, i) in products.filter((p) => p.visible)"
         :key="i"
       >
         <ProductCard :product="product" />

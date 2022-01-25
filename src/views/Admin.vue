@@ -78,6 +78,7 @@ export default {
         description: "",
         price: 0,
         img: "",
+        visible: false,
       },
       textRules: [
         (v) => !!v || "Campo obligatorio.",

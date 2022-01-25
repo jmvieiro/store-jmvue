@@ -16,12 +16,40 @@
           <v-col cols="12" lg="4" md="12" class="pt-4">
             <v-card-actions>
               <v-btn
-                dark
-                outlined
-                class="ml-2 text-yellow"
+                class="ml-2 text-yellow blue darken-4"
                 @click="editProduct(product)"
               >
                 <v-icon dark>mdi-pencil</v-icon> Editar
+              </v-btn>
+              <v-btn
+                v-if="product.visible"
+                class="ml-2 text-yellow red darken-4"
+                @click="
+                  () => {
+                    $store.dispatch('products/changeVisibilityProduct', {
+                      id: product.id,
+                      visible: false,
+                    });
+                    this.$toast.top('¡Producto retirado del stock!');
+                  }
+                "
+              >
+                <v-icon dark>mdi-delete</v-icon> Ocultar
+              </v-btn>
+              <v-btn
+                v-else
+                class="ml-2 text-yellow green darken-4"
+                @click="
+                  () => {
+                    $store.dispatch('products/changeVisibilityProduct', {
+                      id: product.id,
+                      visible: true,
+                    });
+                    this.$toast.top('¡Producto incorporado al stock!');
+                  }
+                "
+              >
+                <v-icon dark>mdi-playlist-check</v-icon> Mostrar
               </v-btn>
             </v-card-actions>
           </v-col>

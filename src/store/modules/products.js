@@ -11,18 +11,19 @@ export const mutations = {
   ADD_PRODUCT(state, payload) {
     state.products = [...state.products, payload];
   },
-  DELETE_FROM_STOCK(state, payload) {
-    console.log(payload);
-    let aux = state.products.filter(function (obj) {
-      return obj.id !== payload.id;
-    });
+  CHANGE_VISIBILITY_PRODUCT(state, payload) {
+    let aux = [...state.products];
+    let product = aux.find((o) => o.id === payload.id);
+    product.visible = payload.visible;
     state.products = aux;
   },
   EDIT_PRODUCT(state, payload) {
-    let p = state.products.find((p) => p.id === payload.id);
-    p.title = payload.title;
-    p.description = payload.description;
-    p.price = payload.price;
+    let aux = [...state.products];
+    let product = aux.find((o) => o.id === payload.id);
+    product.title = payload.title;
+    product.description = payload.description;
+    product.price = payload.price;
+    state.products = aux;
   },
   GET_PRODUCTS(state, payload) {
     state.products = payload;
@@ -74,6 +75,21 @@ export const actions = {
       })
       .catch((res) => {
         console.log(`Ha ocurrido un error al agregar el producto ${res}`);
+      });
+  },
+  changeVisibilityProduct(context, payload) {
+    axios
+      .put(
+        `https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products/${payload.id}`,
+        {
+          visible: payload.visible,
+        }
+      )
+      .then((res) => {
+        context.commit("CHANGE_VISIBILITY_PRODUCT", res.data);
+      })
+      .catch((res) => {
+        console.log(`Ha ocurrido un error al actualizar el producto ${res}`);
       });
   },
   getProducts(context) {
