@@ -42,7 +42,8 @@ Consiste en un e-commerce, denominado Store jmVUE, a través del cual se podrán
 - Editar el pedido: pasar de estado "pendiente" a "resuelto".
 
 ## Mockapi
-
+```
 Users: https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/users
 Products: https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/products
 Orders: https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/orders
+```
