@@ -102,6 +102,7 @@ export default {
           price: this.selectedProduct.price,
           img: this.selectedProduct.img,
         });
+        this.$toast.top("¡Producto actualizado en el stock!");
         this.$emit("closeDialog", false);
       }
     },

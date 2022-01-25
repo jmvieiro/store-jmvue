@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <BackToStore />
+    <BackTo />
     <v-card
       v-if="!user[0]"
       max-width="600"
@@ -82,13 +82,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import BackToStore from "../components/BackToStore";
+import BackTo from "../components/BackTo";
 import BottomNavigationCart from "../components/BottomNavigationCart";
 
 export default {
   name: "Login",
   components: {
-    BackToStore,
+    BackTo,
     BottomNavigationCart,
   },
   data: () => ({

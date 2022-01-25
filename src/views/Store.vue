@@ -8,7 +8,7 @@
       ></v-progress-circular>
     </div>
     <div v-else>
-      <Products :productId="this.$route.params.id" :admin="false" />
+      <Products />
       <BottomNavigationCart />
     </div>
   </div>
@@ -28,11 +28,14 @@ export default {
   data() {
     return {
       product: {},
-      totalIte: this.totalItems,
     };
   },
   computed: {
     ...mapGetters("products", ["loading"]),
+  },
+  mounted() {
+    if (!this.$store.getters["products/products"][0])
+      this.$store.dispatch("products/getProducts");
   },
 };
 </script>

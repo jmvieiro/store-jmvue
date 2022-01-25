@@ -3,7 +3,9 @@
     <router-link :to="{ path: '/store/' + product.id }">
       <img :src="product.img" style="width: 100%" />
     </router-link>
-    <v-card-title class="justify-center pb-0 pt-0"> {{ product.title }} </v-card-title>
+    <v-card-title class="justify-center pb-0 pt-0">
+      {{ product.title }}
+    </v-card-title>
     <v-card-title class="justify-center">
       {{ product.price | money }}
     </v-card-title>
@@ -13,10 +15,13 @@
         outlined
         class="ml-2 text-yellow"
         @click="
-          $store.dispatch('cart/addToCart', {
-            product: product,
-            qty: 1,
-          })
+          () => {
+            $store.dispatch('cart/addToCart', {
+              product: product,
+              qty: 1,
+            });
+            this.$toast.top('¡Producto agregado al carrito!');
+          }
         "
       >
         <v-icon dark>mdi-cart-plus</v-icon> Agregar

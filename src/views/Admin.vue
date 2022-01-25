@@ -95,10 +95,8 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch("products/addProduct", this.newProduct);
-        this.newProduct.title = "";
-        this.newProduct.price = 0;
-        this.newProduct.description = "";
-        this.newProduct.img = "";
+        this.$refs.form.reset();
+        this.$toast.top("¡Producto agregado al stock!");
       }
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <BackToStore />
+    <BackTo />
     <h2 class="mb-8 mb-lg-8 text-yellow text-uppercase">Carrito de compras</h2>
     <div
       v-if="cart.length === 0"
@@ -18,7 +18,16 @@
             <ProductCardCart :item="item" />
           </div>
           <div class="px-8 text-right mt-6">
-            <v-btn outlined color="red" @click="$store.dispatch('cart/clearCart')">
+            <v-btn
+              outlined
+              color="red"
+              @click="
+                () => {
+                  $store.dispatch('cart/clearCart');
+                  this.$toast.top('Vaciaste el carrito');
+                }
+              "
+            >
               Vaciar carrito
             </v-btn>
           </div>
@@ -34,7 +43,7 @@
 <script>
 import ProductCardCart from "../components/ProductCardCart";
 import Checkout from "../components/Checkout";
-import BackToStore from "../components/BackToStore";
+import BackTo from "../components/BackTo";
 import { mapGetters } from "vuex";
 
 export default {
@@ -42,7 +51,7 @@ export default {
   components: {
     ProductCardCart,
     Checkout,
-    BackToStore,
+    BackTo,
   },
   computed: {
     ...mapGetters("cart", ["cart"]),

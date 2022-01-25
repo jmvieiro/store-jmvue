@@ -62,7 +62,14 @@
                 </v-list-item>
               </router-link>
             </div>
-            <v-list-item @click="$store.dispatch('auth/logout')">
+            <v-list-item
+              @click="
+                () => {
+                  $store.dispatch('auth/logout');
+                  this.$toast.top('¡Sesión cerrada!');
+                }
+              "
+            >
               <v-list-item-icon>
                 <v-icon class="text-yellow">mdi-logout</v-icon>
               </v-list-item-icon>
@@ -120,9 +127,12 @@ export default {
           setTimeout(() => {
             this.$router.push("/store").catch(() => {});
           }, 5000);
+        } else {
+          if (!this.$store.getters["orders/orders"][0])
+            this.$store.dispatch("orders/getOrders");
+          if (!this.$store.getters["products/products"][0])
+            this.$store.dispatch("products/getProducts");
         }
-        // if (this.user[0].admin) this.$router.push("/admin/products").catch(() => {});
-        // else this.$router.push("/store").catch(() => {});
       } else this.$router.push("/store").catch(() => {});
     },
   },

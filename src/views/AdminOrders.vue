@@ -39,11 +39,6 @@
             </span>
           </template>
         </v-data-table>
-        <EditOrder
-          :order="selectedOrder"
-          :dialog="dialog"
-          @closeDialog="closeDialog($event)"
-        />
       </div>
     </div>
   </v-container>
@@ -51,7 +46,6 @@
 
 <script>
 import AdminHeader from "../components/AdminHeader";
-import EditOrder from "../components/EditOrder";
 
 import { mapGetters } from "vuex";
 
@@ -59,12 +53,9 @@ export default {
   name: "AdminOrders",
   components: {
     AdminHeader,
-    EditOrder,
   },
   data() {
     return {
-      dialog: false,
-      selectedOrder: {},
       headers: [
         { text: "ID", align: "start", value: "id" },
         { text: "Comprador", value: "buyer.name" },
@@ -77,8 +68,7 @@ export default {
   },
   methods: {
     viewOrder(order) {
-      this.dialog = true;
-      this.selectedOrder = { ...order };
+      this.$router.replace("/admin/orders/" + order.id);
     },
     closeDialog(state) {
       this.dialog = state;
@@ -87,9 +77,6 @@ export default {
   computed: {
     ...mapGetters("orders", ["orders"]),
     ...mapGetters("orders", ["loading"]),
-  },
-  mounted() {
-    this.$store.dispatch("orders/getOrders");
   },
 };
 </script>

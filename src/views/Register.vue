@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <BackToStore />
+    <BackTo />
     <v-card
       v-if="!user[0]"
       color="black"
@@ -101,12 +101,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import BackToStore from "../components/BackToStore";
+import BackTo from "../components/BackTo";
 import BottomNavigationCart from "../components/BottomNavigationCart";
 export default {
   name: "Register",
   components: {
-    BackToStore,
+    BackTo,
     BottomNavigationCart,
   },
   data: () => ({

@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: "/store/:id",
-    name: "Store",
-    component: () => import("../views/Store.vue"),
+    name: "ProductDetail",
+    component: () => import("../views/ProductDetail.vue"),
   },
   {
     path: "/register",
@@ -50,9 +50,15 @@ const routes = [
   },
   {
     path: "/admin/orders",
-    name: "Admin",
+    name: "AdminOrders",
     meta: { requiresAuth: true },
     component: () => import("../views/AdminOrders.vue"),
+  },  
+  {
+    path: "/admin/orders/:id",
+    name: "OrderDetail",
+    meta: { requiresAuth: true },
+    component: () => import("../views/OrderDetail.vue"),
   },
   {
     path: "/cart",

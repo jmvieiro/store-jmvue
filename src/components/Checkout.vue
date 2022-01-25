@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    dark
-    class="mx-auto pa-2 border-main"
-  >
+  <v-card dark class="mx-auto pa-2 border-main">
     <v-card-title>
       <h2 class="text-uppercase">Checkout</h2>
     </v-card-title>
@@ -43,12 +40,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        dark
-        @click="validate()"
-      >
+      <v-btn :disabled="!valid" color="success" dark @click="validate()">
         Confirmar orden
       </v-btn>
     </v-card-actions>
@@ -97,6 +89,7 @@ export default {
         this.$store.dispatch("orders/createOrder", {
           buyer: this.buyer,
         });
+        this.$refs.form.reset();
       }
     },
   },
@@ -112,6 +105,13 @@ export default {
     ...mapGetters("cart", ["totalItems"]),
     ...mapGetters("cart", ["cart"]),
     ...mapGetters("auth", ["user"]),
+    ...mapGetters("orders", ["orders"]),
+  },
+  watch: {
+    orders() {
+      let aux = this.orders[this.orders.length - 1];
+      this.$toast.top(`¡Se generó la orden ${aux.id} con éxito!`);
+    },
   },
 };
 </script>

@@ -10,23 +10,30 @@
 <script>
 import Vue from "vue";
 import Appbar from "./components/Appbar";
+import Toast from "vue2-toast";
+import "vue2-toast/lib/toast.css";
 
 Vue.filter("capitalize", (value) => {
   if (!value) return "";
   return value.toUpperCase();
 });
+
 Vue.filter("money", (value) => {
   if (!value) return 0;
   return `$${value.toFixed(2)}`;
+});
+
+Vue.use(Toast, {
+  defaultType: "bottom",
+  duration: 4000,
+  wordWrap: false,
+  width: "auto",
 });
 
 export default {
   name: "App",
   components: {
     Appbar,
-  },
-  mounted() {
-    this.$store.dispatch("products/getProducts");
   },
 };
 </script>
@@ -60,7 +67,16 @@ input {
   margin-bottom: 10px;
 }
 .v-data-table__wrapper > table > thead > tr > th {
-  color: #d4e069 !important;
+  color: hsl(66, 66%, 65%) !important;
   font-size: 16px !important;
+}
+
+.lx-toast {
+  font-family: "Roboto", sans-serif !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #d4e069;
+  background: rgb(21, 48, 26);
+  border: 1px solid #d4e069 !important;
 }
 </style>

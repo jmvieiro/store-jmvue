@@ -4,16 +4,16 @@
       <v-avatar class="ma-3" size="125" tile>
         <v-img :src="product.img"></v-img>
       </v-avatar>
-      <v-container fluid>
+      <v-container>
         <v-row>
-          <v-col lg="8">
+          <v-col cols="12" lg="8" md="12">
             <v-card-title class="text-h6">{{ product.title }}</v-card-title>
             <v-card-subtitle>{{ product.description }}</v-card-subtitle>
             <v-card-subtitle style="margin-top: -16px; padding-top: 0px">{{
               product.price | money
             }}</v-card-subtitle>
           </v-col>
-          <v-col lg="4" class="pt-4">
+          <v-col cols="12" lg="4" md="12" class="pt-4">
             <v-card-actions>
               <v-btn
                 dark
@@ -45,12 +45,7 @@ export default {
   data() {
     return {
       dialog: false,
-      selectedProduct: {
-        // title: "",
-        // price: 0,
-        // description: "",
-        // img: "",
-      },
+      selectedProduct: {},
     };
   },
   props: {

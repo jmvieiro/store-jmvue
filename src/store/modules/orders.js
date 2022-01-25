@@ -10,6 +10,12 @@ export const mutations = {
   CREATE_ORDER(state, payload) {
     state.orders.push(payload);
   },
+  COMPLETE_ORDER(state, payload) {
+    let aux = [...state.orders];
+    let order = aux.find((o) => o.id === payload.id);
+    order.state = "complete";
+    state.orders = aux;
+  },
   GET_ORDERS(state, payload) {
     state.orders = payload;
   },
@@ -43,6 +49,18 @@ export const actions = {
       })
       .catch((res) => {
         console.log(`Ha ocurrido un error al registrar la orden ${res}`);
+      });
+  },
+  completeOrder(context, payload) {
+    axios
+      .put(`https://61ba1ffb48df2f0017e5a919.mockapi.io/api/v1/orders/${payload}`, {
+        state: "complete",
+      })
+      .then((res) => {
+        context.commit("COMPLETE_ORDER", res.data);
+      })
+      .catch((res) => {
+        console.log(`Ha ocurrido un error al completar el pedido ${res}`);
       });
   },
   getOrders(context) {
