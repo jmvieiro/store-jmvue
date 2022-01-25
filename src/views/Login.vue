@@ -7,12 +7,17 @@
       class="mx-auto mt-4 pa-8 grey darken-4"
     >
       <v-container>
-        <h2 class="mb-8 mb-lg-8 text-yellow text-uppercase">
-          Acceso usuarios
-          <i style="font-size: 17px !important" class="text-lowercase">
-            (Test: jmvieiro@gmail.com | 1234)
+        <h2 class="text-yellow text-uppercase">Acceso usuarios</h2>
+        <h6 class="text-yellow text-uppercase">
+          <i style="font-size: 13px !important" class="text-lowercase">
+            (admin: admin@gmail.com | 1234)
           </i>
-        </h2>
+        </h6>
+        <h6 class="mb-8 mb-lg-8 text-yellow text-uppercase">
+          <i style="font-size: 13px !important" class="text-lowercase">
+            (no-admin: user@gmail.com | 1234)
+          </i>
+        </h6>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="model.email"
@@ -56,9 +61,7 @@
       max-width="600"
       class="mx-auto mt-4 pa-8 text-center grey darken-4"
     >
-      <h2 class="text-yellow mb-6">
-        Bienvenido {{ user[0].email }}
-      </h2>
+      <h2 class="text-yellow mb-6">Bienvenido {{ user[0].email }}</h2>
 
       <div v-if="user[0].admin">
         <router-link to="/">
@@ -97,8 +100,8 @@ export default {
     visible: false,
     timerCount: 6,
     model: {
-      password: "1234",
-      email: "jmvieiro@gmail.com",
+      password: "",
+      email: "",
     },
     userRules: [
       (v) => !!v || "Usuario es obligatorio.",
